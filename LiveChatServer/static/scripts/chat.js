@@ -11,17 +11,17 @@ const setupSockets = () => {
         console.log('connected');
     })
 
-    socket.on('joinedRoom', (data) => {
-        document.getElementById('rcode').innerHTML = data.rcode
-        localStorage.setItem('livechat-rcode', data.rcode)
+    socket.on('joinedRoom', (rCode) => {
+        document.getElementById('rcode').innerHTML = rCode
+        localStorage.setItem('livechat-rcode', rCode)
     })
 
-    socket.on('updateClientText', (data) => {
-        textarea.value = data.content;
+    socket.on('updateClientText', (content) => {
+        textarea.value = content;
     })
     
-    socket.on('updateClientMembers', (data) => {
-        document.getElementById('members').innerHTML = data.members.join(', ');
+    socket.on('updateClientMembers', (members) => {
+        document.getElementById('members').innerHTML = members.join(', ');
     })
 
     textarea.addEventListener('onchange', () => {

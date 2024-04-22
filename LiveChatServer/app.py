@@ -58,10 +58,10 @@ async def join(sid, username:str, rcode:str, *args, **kwargs):
     members[sid] = { "username": username, "rcode": rcode }
 
     await sm.enter_room(sid, rcode)
-    await sm.emit("updateClientText", {"content": content}, to=sid)
-    await sm.emit("joinedRoom", {"rcode": rcode}, to=sid)
-    await sm.emit("updateClientMembers", {"members": current_room["members"]}, room=rcode)
-    await sm.emit("notifyRoom", {"content": f"{username} has joined the conversation!"} ,room=rcode)
+    await sm.emit("updateClientText", content, to=sid)
+    await sm.emit("joinedRoom", rcode, to=sid)
+    await sm.emit("updateClientMembers",  current_room["members"], room=rcode)
+    await sm.emit("notifyRoom", f"{username} has joined the conversation!" ,room=rcode)
 
 @sm.on("updateServerText")
 async def message(sid, rcode:str, content:str):
@@ -73,7 +73,8 @@ async def disconnect(sid, *args, **kwargs):
     rooms[member_info["rcode"]]["members"].remove(member_info["username"])
     
     await sm.leave_room(sid, member_info["rcode"])
-    await sm.emit("notifyRoom", {"content": f"{member_info['username']} has left the conversation!"} ,room=member_info["rcode"])
+    await sm.emit("updateClientMembers",  rooms[member_info["rcode"]]["members"], room=member_info["rcode"])
+    await sm.emit("notifyRoom", f"{member_info['username']} has left the conversation!" ,room=member_info["rcode"])
     del members[sid]
 
 if __name__ == "__main__":
