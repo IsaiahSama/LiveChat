@@ -7,11 +7,20 @@
 {% endblock %}
 
 {% block content %} 
-    <h2>Chatting in Room: <span id="rcode"></span></h2>
-    <p>Members: <span id="members"></span></p>
-    <div id="notification" class="has-text-success"></div>
-    <div id="error" class="has-text-danger"></div>
-    <textarea name="textarea" id="textarea" cols="50" rows="100" class="textarea"></textarea>
+    <div class="container is-fullwidth has-text-centered">
+        <h2 class="subtitle">Chatting in Room: <span id="rcode"></span></h2>
+    </div>
+    <div class="is-flex is-justify-content-space-between">
+        <p>Welcome: <span id="username"></span></p>
+        <p>Members: <span id="members" style="max-width: 60%; overflow-x: wrap"></span></p>
+    </div>
+    
+    <div class="is-flex is-justify-content-space-between">
+        <div id="notification" class="has-text-success"></div>
+        <div id="error" class="has-text-danger"></div>
+    </div>
+
+    <textarea name="textarea" id="textarea" cols="50" rows="50" class="textarea" style="max-height: 80vh"></textarea>
 
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', path='scripts/chat.js') }}"></script>

@@ -6,10 +6,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
     <title>LiveChat - {% block title %}{% endblock %}</title>
 </head>
-<body>
+<body style="overflow-y: hidden; max-height: 100vh;">
     
     {% block outside %} {% endblock %}
-    <section class="section" id="app">
+    <section class="container" id="app">
         {% block content %}{% endblock %}
     </section>
 

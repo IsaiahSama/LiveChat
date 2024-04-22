@@ -8,16 +8,15 @@ const setupSockets = () => {
 
     socket.on('connect', () => {
         socket.emit('joinRoom', chatName, rcode);
-        console.log('connected');
     })
 
     socket.on('joinedRoom', (rCode) => {
+        document.getElementById('username').innerHTML = chatName
         document.getElementById('rcode').innerHTML = rCode
         localStorage.setItem('livechat-rcode', rCode)
     })
 
     socket.on('updateClientText', (content) => {
-        console.log(content);
         textarea.value = content;
     })
     
