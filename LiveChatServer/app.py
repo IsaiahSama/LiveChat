@@ -23,8 +23,12 @@ socket_manager = SocketManager(app=app, cors_allowed_origins=[], mount_location=
 templates = Jinja2Templates(directory="templates")
 
 @app.get("/")
-def index(request: Request):
+async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
+
+@app.get("/chat")
+async def chat(request: Request):
+    return templates.TemplateResponse("chat.html", {"request": request})
 
 if __name__ == "__main__":
     import uvicorn
