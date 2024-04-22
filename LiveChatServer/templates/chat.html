@@ -2,6 +2,10 @@
 
 {% block title %} Chat {% endblock %}
 
+{% block outside %}
+    <button class="button is-success" onclick="backToLobby()">Back to Lobby!</button>
+{% endblock %}
+
 {% block content %} 
     <h2>Chatting in Room: <span id="rcode"></span></h2>
     <p>Members: <span id="members"></span></p>
@@ -11,4 +15,10 @@
 
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', path='scripts/chat.js') }}"></script>
+
+    <script>
+        const backToLobby = () => {
+            window.location.href = "{{ url_for('index') }}"
+        }
+    </script>
 {% endblock %}
