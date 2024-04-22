@@ -20,7 +20,7 @@
         <div class="field">
             <div class="control">
                 <label for="rcode" class="label">Room Code <span class="required">*</span> <span title="The code for the room you wish to join" style="cursor: pointer">❓</span></label>
-                <input class="input" id="rcode" type="text" placeholder="Room Code" required maxlength="8" minlength="6">
+                <input class="input" id="rcode" type="text" placeholder="Room Code" required maxlength="9" minlength="6">
             </div>
         </div>
         <div class="control">
@@ -34,6 +34,9 @@
 
             const name = document.getElementById("name").value
             const rcode = document.getElementById("rcode").value
+
+            document.getElementById("name").value = ""
+            document.getElementById("rcode").value = ""
 
             let valid = true
 
@@ -59,6 +62,7 @@
             localStorage.setItem("livechat-rcode", rcode)
 
             setTimeout(() => {
+                document.getElementById("loginButton").classList.remove("is-loading")
                 window.location.href = "{{ url_for('chat') }}"
             }, 4000)
         })
