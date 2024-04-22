@@ -17,6 +17,7 @@ const setupSockets = () => {
     })
 
     socket.on('updateClientText', (content) => {
+        console.log(content);
         textarea.value = content;
     })
     
@@ -24,8 +25,8 @@ const setupSockets = () => {
         document.getElementById('members').innerHTML = members.join(', ');
     })
 
-    textarea.addEventListener('onchange', () => {
-        socket.emit('updateServerText', textarea.value)
+    textarea.addEventListener('input', () => {
+        socket.emit('updateServerText', rcode, textarea.value)
     })
 }
 

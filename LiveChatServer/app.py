@@ -65,7 +65,12 @@ async def join(sid, username:str, rcode:str, *args, **kwargs):
 
 @sm.on("updateServerText")
 async def message(sid, rcode:str, content:str):
-    pass
+    room = rooms.get(rcode)
+    if not room:
+        return
+    
+    room["content"] = content
+    await sm.emit("updateClientText", content, room=rcode)
 
 @sm.on("disconnect")
 async def disconnect(sid, *args, **kwargs):
