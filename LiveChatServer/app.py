@@ -16,10 +16,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-socket_manager = SocketManager(app=app, cors_allowed_origins=[])
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+socket_manager = SocketManager(app=app, cors_allowed_origins=[], mount_location="/socket.io", socketio_path="")
 
 templates = Jinja2Templates(directory="templates")
-static = StaticFiles(directory="static")
 
 @app.get("/")
 def index(request: Request):
