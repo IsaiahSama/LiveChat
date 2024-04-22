@@ -70,7 +70,7 @@ async def message(sid, rcode:str, content:str):
         return
     
     room["content"] = content
-    await sm.emit("updateClientText", content, room=rcode)
+    await sm.emit("updateClientText", content, room=rcode, skip_sid=sid)
 
 @sm.on("disconnect")
 async def disconnect(sid, *args, **kwargs):
