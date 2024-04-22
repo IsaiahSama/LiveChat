@@ -10,7 +10,7 @@
 
     <h1 class="title">Welcome to Live Chat!</h1>
     
-    <form>
+    <form id="login-form">
         <div class="field">
             <div class="control">
                 <label for="name" class="label">Username <span class="required">*</span></label>
@@ -19,18 +19,30 @@
         </div>
         <div class="field">
             <div class="control">
-                <label for="pword" class="label">Password <span class="required">*</span></label>
-                <input class="input" type="password" placeholder="Password" required>
-            </div>
-        </div>
-        <div class="field">
-            <div class="control">
                 <label for="rcode" class="label">Room Code <span class="required">*</span> <span title="The code for the room you wish to join" style="cursor: pointer">❓</span></label>
                 <input class="input" type="text" placeholder="Room Code" required>
             </div>
         </div>
         <div class="control">
-            <button class="button is-primary is-fullwidth">Login!</button>
+            <button class="button is-primary is-fullwidth" id="loginButton">Login!</button>
         </div>
     </form>
+
+    <script>
+        document.getElementById("login-form").addEventListener("submit", (e) => {
+            e.preventDefault()
+
+            const name = document.getElementById("name").value
+            const rcode = document.getElementById("rcode").value
+
+            document.getElementById("loginButton").classList.add("is-loading")
+
+            localStorage.setItem("livechat-name", name)
+            localStorage.setItem("livechat-rcode", rcode)
+
+            setTimeout(() => {
+                window.location.href = "{{ url_for('chat') }}"
+            }, 4000)
+        })
+    </script>
 {% endblock %}
