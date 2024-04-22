@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %} Chat {% endblock %}
+
+{% block content %} 
+
+    <textarea name="textarea" id="textarea" cols="50" rows="100" class="textarea"></textarea>
+
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', path='scripts/index.js') }}"></script>
+{% endblock %}
