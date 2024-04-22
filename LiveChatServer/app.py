@@ -18,7 +18,7 @@ app.add_middleware(
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-socket_manager = SocketManager(app=app, cors_allowed_origins=[], mount_location="/socket.io", socketio_path="")
+sm = SocketManager(app=app, cors_allowed_origins=[], mount_location="/socket.io", socketio_path="")
 
 templates = Jinja2Templates(directory="templates")
 
@@ -29,6 +29,52 @@ async def index(request: Request):
 @app.get("/chat")
 async def chat(request: Request):
     return templates.TemplateResponse("chat.html", {"request": request})
+
+"""
+Rooms will follow the following format:
+room_code: { members: list, content: str }
+"""
+rooms = {}
+
+"""Members will be mapped in the following format:
+
+sid: {username: str, rcode: strr}"""
+members = {}
+
+@sm.on("joinRoom")
+async def join(sid, username:str, rcode:str, *args, **kwargs):
+    print("join", sid, username, rcode, kwargs)
+    current_room = rooms.setdefault(rcode, {"members": [], "content": ""})
+
+    if username in current_room["members"]:
+        await sm.emit("error", to=sid, message="A member with the same username is already in this room. To join, please use a different username.")
+        return
+
+    current_room["members"].append(username)
+    content = current_room["content"]
+
+    rooms[rcode] = current_room
+
+    members[sid] = { "username": username, "rcode": rcode }
+
+    await sm.enter_room(sid, rcode)
+    await sm.emit("updateClientText", {"content": content}, to=sid)
+    await sm.emit("joinedRoom", {"rcode": rcode}, to=sid)
+    await sm.emit("updateClientMembers", {"members": current_room["members"]}, room=rcode)
+    await sm.emit("notifyRoom", {"content": f"{username} has joined the conversation!"} ,room=rcode)
+
+@sm.on("updateServerText")
+async def message(sid, rcode:str, content:str):
+    pass
+
+@sm.on("disconnect")
+async def disconnect(sid, *args, **kwargs):
+    member_info = members[sid]
+    rooms[member_info["rcode"]]["members"].remove(member_info["username"])
+    
+    await sm.leave_room(sid, member_info["rcode"])
+    await sm.emit("notifyRoom", {"content": f"{member_info['username']} has left the conversation!"} ,room=member_info["rcode"])
+    del members[sid]
 
 if __name__ == "__main__":
     import uvicorn
