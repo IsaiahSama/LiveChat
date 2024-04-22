@@ -9,7 +9,7 @@
     </style>
 
     <h1 class="title">Welcome to Live Chat!</h1>
-    
+    <span id="errorMessage" class="required"></span>
     <form id="login-form">
         <div class="field">
             <div class="control">
@@ -20,7 +20,7 @@
         <div class="field">
             <div class="control">
                 <label for="rcode" class="label">Room Code <span class="required">*</span> <span title="The code for the room you wish to join" style="cursor: pointer">❓</span></label>
-                <input class="input" type="text" placeholder="Room Code" required>
+                <input class="input" type="text" placeholder="Room Code" required maxlength="8" minlength="6">
             </div>
         </div>
         <div class="control">
@@ -34,6 +34,24 @@
 
             const name = document.getElementById("name").value
             const rcode = document.getElementById("rcode").value
+
+            let valid = true
+
+            const isAlpha = (chr) => {
+                return /[a-zA-Z]/.test(chr)
+            }
+
+            for (let char of rcode) {
+                if (!isAlpha(char)) {
+                    valid = false
+                    break   
+                }
+            }
+
+            if (!valid) {
+                document.getElementById("errorMessage").innerText = "Invalid room code. Code should be all letters!"
+                return
+            }
 
             document.getElementById("loginButton").classList.add("is-loading")
 
