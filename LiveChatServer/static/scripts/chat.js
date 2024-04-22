@@ -25,6 +25,14 @@ const setupSockets = () => {
         document.getElementById('members').innerHTML = members.join(', ');
     })
 
+    socket.on('notifyRoom', (message) => {
+        document.getElementById('notification').innerHTML = message
+    })
+
+    socket.on('error', (message) => {
+        document.getElementById('error').innerHTML = message       
+    })
+
     textarea.addEventListener('input', () => {
         socket.emit('updateServerText', rcode, textarea.value)
     })

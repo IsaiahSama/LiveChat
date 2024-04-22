@@ -47,7 +47,7 @@ async def join(sid, username:str, rcode:str, *args, **kwargs):
     current_room = rooms.setdefault(rcode, {"members": [], "content": ""})
 
     if username in current_room["members"]:
-        await sm.emit("error", to=sid, message="A member with the same username is already in this room. To join, please use a different username.")
+        await sm.emit("error", to=sid, data="A member with the same username is already in this room. To join, please use a different username.")
         return
 
     current_room["members"].append(username)
