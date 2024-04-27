@@ -29,12 +29,12 @@ const setupSockets = () => {
     })
     
     socket.on('updateClientMembers', (members) => {
-        document.getElementById('members').innerHTML = Object.keys(members).join(', ');
+        document.getElementById('members').innerHTML = members.join(', ');
     })
 
     socket.on('memberJoined', (member) => {
-        if (member == chatName) return;
-        prepareRoom(member);    
+        if (member.username == chatName) return;
+        prepareRoom(member.username, member.color);    
     })
 
     socket.on('memberLeft', (member) => {
