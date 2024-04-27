@@ -80,9 +80,19 @@ const createTextarea = (username) => {
 }
 
 const createSpan = (username, color) => {
+    const divContainer = document.createElement('div');
     const span = document.createElement('span');
     span.innerHTML = `${username}'s Chat `;
     span.style.color = color;
+
+    const button = document.createElement('button');
+    button.innerText = "CLEAR";
+
+    button.className = 'button is-primary'
+
+    button.addEventListener('click', () => {
+        document.getElementById(username).value = ""
+    })
 
     return span;
 }
