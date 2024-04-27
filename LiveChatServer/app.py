@@ -58,8 +58,8 @@ async def join(sid, username:str, rcode:str, color:str, *args, **kwargs):
 
     await sm.enter_room(sid, rcode)
     await sm.emit("joinedRoom", data={"rcode": rcode, "members": [(member_name, member_color) for member_name, member_color in current_room["members"].items()]}, to=sid)
-    await sm.emit("updateClientMembers", current_room["members"], room=rcode)
-    await sm.emit('memberJoined', username, room=rcode)
+    await sm.emit("updateClientMembers", list(current_room["members"].keys()), room=rcode)
+    await sm.emit('memberJoined', data={"username":username, "color":color}, room=rcode)
     await sm.emit("notifyRoom", f"{username} has joined the conversation!" ,room=rcode)
 
 @sm.on("updateServerText")
