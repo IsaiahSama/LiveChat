@@ -51,26 +51,26 @@ async def join(sid, username:str, rcode:str, *args, **kwargs):
         return
 
     current_room["members"].append(username)
-    content = current_room["content"]
 
     rooms[rcode] = current_room
 
     members[sid] = { "username": username, "rcode": rcode }
 
     await sm.enter_room(sid, rcode)
-    await sm.emit("updateClientText", content, to=sid)
-    await sm.emit("joinedRoom", rcode, to=sid)
-    await sm.emit("updateClientMembers",  current_room["members"], room=rcode)
+    await sm.emit("joinedRoom", data={"rcode": rcode, "members": current_room["members"]}, to=sid)
+    await sm.emit("updateClientMembers", current_room["members"], room=rcode)
+    await sm.emit('memberJoined', username, room=rcode)
     await sm.emit("notifyRoom", f"{username} has joined the conversation!" ,room=rcode)
 
 @sm.on("updateServerText")
-async def message(sid, rcode:str, content:str):
+async def message(sid, rcode:str, username:str, content:str):
     room = rooms.get(rcode)
     if not room:
         return
     
-    room["content"] = content
-    await sm.emit("updateClientText", content, room=rcode, skip_sid=sid)
+    # room["content"] = content
+    data = {"username": username, "content": content}
+    await sm.emit("updateClientText", data, room=rcode, skip_sid=sid)
 
 @sm.on("disconnect")
 async def disconnect(sid, *args, **kwargs):
@@ -79,6 +79,7 @@ async def disconnect(sid, *args, **kwargs):
     
     await sm.leave_room(sid, member_info["rcode"])
     await sm.emit("updateClientMembers",  rooms[member_info["rcode"]]["members"], room=member_info["rcode"])
+    await sm.emit('memberLeft', member_info["username"], room=member_info["rcode"])
     await sm.emit("notifyRoom", f"{member_info['username']} has left the conversation!" ,room=member_info["rcode"])
     del members[sid]
 

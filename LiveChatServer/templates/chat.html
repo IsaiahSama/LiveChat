@@ -20,7 +20,11 @@
         <div id="error" class="has-text-danger"></div>
     </div>
 
-    <textarea name="textarea" id="textarea" cols="50" rows="50" class="textarea" style="max-height: 80vh"></textarea>
+    <div id="textGridContainer" class="fixed-grid" style="overflow-y: scroll;">
+        <div class="grid" id="textareas">
+
+        </div>
+    </div>
 
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', path='scripts/chat.js') }}"></script>
