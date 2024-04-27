@@ -23,6 +23,12 @@
                 <input class="input" id="rcode" type="text" placeholder="Room Code" required maxlength="9" minlength="6">
             </div>
         </div>
+        <div class="field">
+            <div class="control">
+                <label for="color" class="label">Pick your color!</label>
+                <input class="input is-large" id="color" type="color">
+            </div>
+        </div>
         <div class="control">
             <button class="button is-primary is-fullwidth" id="loginButton">Login!</button>
         </div>
@@ -34,6 +40,7 @@
 
             const name = document.getElementById("name").value
             const rcode = document.getElementById("rcode").value
+            const color = document.getElementById("color").value
 
             document.getElementById("name").value = ""
             document.getElementById("rcode").value = ""
@@ -60,6 +67,7 @@
 
             localStorage.setItem("livechat-name", name)
             localStorage.setItem("livechat-rcode", rcode)
+            localStorage.setItem('livechat-color', color)
 
             setTimeout(() => {
                 document.getElementById("loginButton").classList.remove("is-loading")
