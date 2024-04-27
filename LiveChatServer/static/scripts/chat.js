@@ -95,11 +95,15 @@ const createHeader = (username, color) => {
     button.style.backgroundColor = color
 
     button.addEventListener('click', () => {
-        document.getElementById(username).value = ""
+        if (username != chatName)
+            alert("How dare you!");
+        else 
+            document.getElementById(username).value = ""
     })
 
     divContainer.appendChild(span);
-    divContainer.appendChild(button);
+    if (button)
+        divContainer.appendChild(button);
 
     return divContainer;
 }
